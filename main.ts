@@ -44,6 +44,15 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Bumper, function (sprite, otherS
     }
     pause(invincibilityPeriod)
 })
+function _1subLevels (level: number) {
+    clearGame()
+    if (level == 1) {
+        tiles.setCurrentTilemap(tilemap`level`)
+    } else if (level == 0) {
+        tiles.setCurrentTilemap(tilemap`level1`)
+    }
+    initializeLevel(level)
+}
 function initializeAnimations () {
     initializeHeroAnimations()
     initializeCoinAnimation()
@@ -790,15 +799,6 @@ function createEnemies () {
         animation.attachAnimation(flier, flierFlying)
         animation.attachAnimation(flier, flierIdle)
     }
-}
-function _1subLevels (level: number) {
-    clearGame()
-    if (level == 1) {
-        tiles.setCurrentTilemap(tilemap`level`)
-    } else if (level == 0) {
-        tiles.setCurrentTilemap(tilemap`level1`)
-    }
-    initializeLevel(level)
 }
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (!(hero.isHittingTile(CollisionDirection.Bottom))) {
