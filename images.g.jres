@@ -1,0 +1,37 @@
+{
+    "image2": {
+        "data": "hwQTAAgAAAAAAPD/AADw/wAA//8A8P////3/D/8A3QD/AN0A///dAP/w3QD/3d0A/w8AAP8PAAD/DwAA/w8AAP8PAAD/DwAA/w8AAP8PAAD/AAAA",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "gun"
+    },
+    "image1": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAAARAIAAAAAACBCAAAAAAAARAIAAAAAAPBPAAAAAAAA/wAAAAAAAPAPAAAAJCIiIkQiIiJCIkQiIiRCJA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "LeverVDown"
+    },
+    "image3": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAAAIEQAAAAAAAAAJAIAAAAAAAAgRAAAAAAAAAD0DwAAAAAAAAD/AAAAAAAAAPAPAAAAIiIiRCIiIkJCJEIiIkQiJA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "LeverVUp"
+    },
+    "image4": {
+        "data": "hwQQABAAAAAAAAAAAAAAAADw//8PAAAAAO/d3f3/DwDw7t3dzbz6D/Du/f/N/Kr68O7d3c39qvrw7t7drd2q+vDu7d2t3ar68O7d3s38uvvw7u7ezfz6DwDv7t69+/sAAPD/////DwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "myImage"
+    },
+    "aoMm;a%!7Y?_6*hvg?wG": {
+        "data": "hwQQABAAAAAAAAAAAAAAAADw//8PAAAAAO/d3f3/DwDw7tLdLULyD/DuLf8t8iLy8O7S3SL1IvLw7t4tTVUi8vDu7dJNVSLy8O7d3i3yQvTw7u7eLfLyDwDv7t5N9PQAAPD/////DwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "EnemyLeftIdle"
+    },
+    "image5": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADw/////w8AAO/+3k309ADw7v7eLfLyDyIiJN4t8kL08O5C0k1VIvLw7v4tTVUi8vDu8t8i9SLy8O79/y3yIvLw7vLfLULyDwDv/d39/w8AAPD//w8AAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "EnemyRightIdle"
+    },
+    "*": {
+        "mimeType": "image/x-mkcd-f4",
+        "dataEncoding": "base64",
+        "namespace": "myImages"
+    }
+}

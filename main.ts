@@ -17,7 +17,18 @@ namespace SpriteKind {
     export const Goal = SpriteKind.create()
     export const Coin = SpriteKind.create()
     export const Flier = SpriteKind.create()
+    export const gun = SpriteKind.create()
+    export const toggleAbleEntity = SpriteKind.create()
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
+    _1subLevels(subLevel)
+    tiles.placeOnTile(hero, tiles.getTileLocation(3, 2))
+    if (subLevel == 0) {
+        subLevel = 1
+    } else if (subLevel == 1) {
+        subLevel = 0
+    }
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Bumper, function (sprite, otherSprite) {
     if (sprite.vy > 0 && !(sprite.isHittingTile(CollisionDirection.Bottom)) || sprite.y < otherSprite.top) {
         otherSprite.destroy(effects.ashes, 250)
@@ -38,42 +49,6 @@ function initializeAnimations () {
     initializeFlierAnimations()
 }
 function giveIntroduction () {
-    game.setDialogFrame(img`
-        . 2 2 2 2 2 2 2 2 2 2 2 2 2 . . 
-        2 2 1 1 1 1 1 1 1 1 1 1 1 2 2 . 
-        2 1 1 2 2 2 2 2 2 2 2 2 1 1 2 . 
-        2 1 2 2 1 1 1 1 1 1 1 2 2 1 2 . 
-        2 1 2 1 1 1 1 1 1 1 1 1 2 1 2 . 
-        2 1 2 1 1 1 1 1 1 1 1 1 2 1 2 . 
-        2 1 2 1 1 1 1 1 1 1 1 1 2 1 2 . 
-        2 1 2 1 1 1 1 1 1 1 1 1 2 1 2 . 
-        2 1 2 1 1 1 1 1 1 1 1 1 2 1 2 . 
-        2 1 2 1 1 1 1 1 1 1 1 1 2 1 2 . 
-        2 1 2 1 1 1 1 1 1 1 1 1 2 1 2 . 
-        2 1 2 2 1 1 1 1 1 1 1 2 2 1 2 . 
-        2 1 1 2 2 2 2 2 2 2 2 2 1 1 2 . 
-        2 2 1 1 1 1 1 1 1 1 1 1 1 2 2 . 
-        . 2 2 2 2 2 2 2 2 2 2 2 2 2 . . 
-        . . . . . . . . . . . . . . . . 
-        `)
-    game.setDialogCursor(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . f f f f . . . . . . 
-        . . . . f f 5 5 5 5 f f . . . . 
-        . . . . f 5 5 5 5 5 5 f . . . . 
-        . . . f 5 5 5 4 4 5 5 5 f . . . 
-        . . . f 5 5 5 4 4 5 5 5 f . . . 
-        . . . f 5 5 5 4 4 5 5 5 f . . . 
-        . . . f 5 5 5 4 4 5 5 5 f . . . 
-        . . . . f 5 5 5 5 5 5 f . . . . 
-        . . . . f f 5 5 5 5 f f . . . . 
-        . . . . . . f f f f . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `)
     showInstruction("Move with the left and right buttons.")
     showInstruction("Jump with the up or A button.")
     showInstruction("Double jump by pressing jump again.")
@@ -81,6 +56,11 @@ function giveIntroduction () {
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     attemptJump()
 })
+function level1n1 () {
+    levelCount = 8
+    currentLevel = 1.1
+    setLevelTileMap(currentLevel)
+}
 function initializeCoinAnimation () {
     coinAnimation = animation.createAnimation(ActionKind.Idle, 200)
     coinAnimation.addAnimationFrame(img`
@@ -413,24 +393,7 @@ function animateRun () {
         . . . f a a b f f a a a f f . . 
         . . . . f f f . f f f f f . . . 
         `)
-    mainRunLeft.addAnimationFrame(img`
-        . . . . . . . . . . . . . . . . 
-        . . . f f f f f f f . . . . . . 
-        . . f e e e e e e e f . . . . . 
-        . f e e e e e e e e e f . . . . 
-        . f d d d d e d d e e f . . . . 
-        . f d d f d d e d e e f . . . . 
-        . f d d f d d d e e e f . . . . 
-        . f d d f d d d d d d f . . . . 
-        . f d d d d d d d d d f . . . . 
-        . . f c c c a a c c b f . . . . 
-        . . f c c d d d c c b f . . . . 
-        . . f b f f d d f f f f . . . . 
-        . . f a a a a a a a b f . . . . 
-        . . . f a a a a b f f . . . . . 
-        . . . f a a a a b f . . . . . . 
-        . . . . f f f f f . . . . . . . 
-        `)
+    mainRunLeft.addAnimationFrame(assets.image`EnemyLeftIdle`)
     mainRunLeft.addAnimationFrame(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -645,6 +608,10 @@ function animateJumps () {
             `)
     }
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`leverTileV`, function (sprite, location) {
+    leverPlace.setImage(assets.image`LeverVDown`)
+    isL1Open = 1
+})
 function animateCrouch () {
     mainCrouchLeft = animation.createAnimation(ActionKind.CrouchLeft, 100)
     animation.attachAnimation(hero, mainCrouchLeft)
@@ -703,9 +670,8 @@ function clearGame () {
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tile1`, function (sprite, location) {
     info.changeLifeBy(1)
-    currentLevel += 1
+    currentLevel += 2
     if (hasNextLevel()) {
-        game.splash("Next level unlocked!")
         setLevelTileMap(currentLevel)
     } else {
         game.over(true, effects.confetti)
@@ -719,24 +685,24 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Flier, function (sprite, otherSp
 })
 function createEnemies () {
     // enemy that moves back and forth
-    for (let value5 of tiles.getTilesByType(assets.tile`tile4`)) {
+    for (let value5 of tiles.getTilesByType(assets.tile`Enemy`)) {
         bumper = sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . f f f f f f . . . . . . 
-            . . . f 7 2 7 7 7 2 f . . . . . 
-            . . f 7 7 7 2 7 2 7 7 f . . . . 
-            . . f 7 7 7 7 7 7 7 7 7 f . . . 
-            . f 7 7 7 2 7 7 7 2 7 7 f . . . 
-            . f 7 7 7 2 7 7 7 2 7 7 7 f . . 
-            . f 7 7 7 7 7 7 7 7 7 7 7 7 f . 
-            . f 7 7 7 7 2 2 2 7 7 7 7 7 f . 
-            . . f 7 7 2 2 7 2 2 7 7 7 7 f . 
-            . . f 7 7 2 7 7 7 2 2 7 7 7 f . 
-            . . . f 7 7 7 7 7 7 7 7 7 7 f . 
-            . . . . f f 7 7 7 7 7 7 7 f . . 
-            . . . . . . f f f f f f f . . . 
-            . . . . . . . . . . . . . . . . 
+            4 . . . . . . . . . . . . . . . 
+            4 . . f f f f f f f f f f . . . 
+            4 . f e e e e e e e e e e f . . 
+            4 f e e e e e e e e e e e e f . 
+            4 f 2 e e 2 d 2 d d 2 d 2 d f . 
+            2 4 2 e 2 f f f f f f f f f f . 
+            4 2 e d f f f f d d d f d 2 f . 
+            . . f f 2 d f d d d d f 2 d f . 
+            . . f d d d d d d d d 2 d d f . 
+            . . f 4 4 2 2 2 2 2 2 2 2 4 f . 
+            . . f 5 5 5 5 5 5 5 5 5 5 5 f . 
+            . . f 5 5 f f f 4 4 f f f 5 f . 
+            . . f 4 2 2 2 2 2 2 2 2 2 f . . 
+            . . . f 4 2 2 f f 4 2 2 f . . . 
+            . . . f 4 2 2 f f 4 2 2 f . . . 
+            . . . . f f f . . f f f . . . . 
             `, SpriteKind.Bumper)
         tiles.placeOnTile(bumper, value5)
         tiles.setTileAt(value5, assets.tile`tile0`)
@@ -773,6 +739,15 @@ function createEnemies () {
         animation.attachAnimation(flier, flierIdle)
     }
 }
+function _1subLevels (level: number) {
+    clearGame()
+    if (level == 1) {
+        tiles.setCurrentTilemap(tilemap`level`)
+    } else if (level == 0) {
+        tiles.setCurrentTilemap(tilemap`level1`)
+    }
+    initializeLevel(level)
+}
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (!(hero.isHittingTile(CollisionDirection.Bottom))) {
         hero.vy += 80
@@ -800,7 +775,9 @@ function createPlayer (player2: Sprite) {
 function initializeLevel (level: number) {
     effects.clouds.startScreenEffect()
     playerStartLocation = tiles.getTilesByType(assets.tile`tile6`)[0]
+    leverLoc = tiles.getTilesByType(assets.tile`leverTileV`)[0]
     tiles.placeOnTile(hero, playerStartLocation)
+    tiles.placeOnTile(leverPlace, leverLoc)
     tiles.setTileAt(playerStartLocation, assets.tile`tile0`)
     createEnemies()
     spawnGoals()
@@ -836,11 +813,13 @@ function spawnGoals () {
 }
 let heroFacingLeft = false
 let coin: Sprite = null
+let leverLoc: tiles.Location = null
 let playerStartLocation: tiles.Location = null
 let flier: Sprite = null
 let bumper: Sprite = null
 let mainCrouchRight: animation.Animation = null
 let mainCrouchLeft: animation.Animation = null
+let isL1Open = 0
 let mainJumpRight: animation.Animation = null
 let mainJumpLeft: animation.Animation = null
 let mainRunRight: animation.Animation = null
@@ -857,7 +836,10 @@ let levelCount = 0
 let gravity = 0
 let pixelsToMeters = 0
 let invincibilityPeriod = 0
+let leverPlace: Sprite = null
 let hero: Sprite = null
+let subLevel = 0
+subLevel = 0
 hero = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . f f f f f f f f f f . . . 
@@ -876,11 +858,14 @@ hero = sprites.create(img`
     . . . f b a a f f b a a f . . . 
     . . . . f f f . . f f f . . . . 
     `, SpriteKind.Player)
+leverPlace = sprites.create(assets.image`LeverVUp`, SpriteKind.toggleAbleEntity)
 // how long to pause between each contact with a
 // single enemy
 invincibilityPeriod = 600
 pixelsToMeters = 30
 gravity = 9.81 * pixelsToMeters
+levelCount = 8
+currentLevel = 0
 scene.setBackgroundImage(img`
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -1005,44 +990,8 @@ scene.setBackgroundImage(img`
     `)
 initializeAnimations()
 createPlayer(hero)
-levelCount = 8
-currentLevel = 0
 setLevelTileMap(currentLevel)
 giveIntroduction()
-// set up hero animations
-game.onUpdate(function () {
-    if (hero.vx < 0) {
-        heroFacingLeft = true
-    } else if (hero.vx > 0) {
-        heroFacingLeft = false
-    }
-    if (hero.isHittingTile(CollisionDirection.Top)) {
-        hero.vy = 0
-    }
-    if (controller.down.isPressed()) {
-        if (heroFacingLeft) {
-            animation.setAction(hero, ActionKind.CrouchLeft)
-        } else {
-            animation.setAction(hero, ActionKind.CrouchRight)
-        }
-    } else if (hero.vy < 20 && !(hero.isHittingTile(CollisionDirection.Bottom))) {
-        if (heroFacingLeft) {
-            animation.setAction(hero, ActionKind.JumpingLeft)
-        } else {
-            animation.setAction(hero, ActionKind.JumpingRight)
-        }
-    } else if (hero.vx < 0) {
-        animation.setAction(hero, ActionKind.RunningLeft)
-    } else if (hero.vx > 0) {
-        animation.setAction(hero, ActionKind.RunningRight)
-    } else {
-        if (heroFacingLeft) {
-            animation.setAction(hero, ActionKind.IdleLeft)
-        } else {
-            animation.setAction(hero, ActionKind.IdleRight)
-        }
-    }
-})
 // Flier movement
 game.onUpdate(function () {
     for (let value8 of sprites.allOfKind(SpriteKind.Flier)) {
@@ -1079,5 +1028,45 @@ game.onUpdate(function () {
         } else if (value9.isHittingTile(CollisionDirection.Right)) {
             value9.vx = Math.randomRange(-60, -30)
         }
+    }
+})
+// set up hero animations
+game.onUpdate(function () {
+    if (hero.vx < 0) {
+        heroFacingLeft = true
+    } else if (hero.vx > 0) {
+        heroFacingLeft = false
+    }
+    if (hero.isHittingTile(CollisionDirection.Top)) {
+        hero.vy = 0
+    }
+    if (controller.down.isPressed()) {
+        if (heroFacingLeft) {
+            animation.setAction(hero, ActionKind.CrouchLeft)
+        } else {
+            animation.setAction(hero, ActionKind.CrouchRight)
+        }
+    } else if (hero.vy < 20 && !(hero.isHittingTile(CollisionDirection.Bottom))) {
+        if (heroFacingLeft) {
+            animation.setAction(hero, ActionKind.JumpingLeft)
+        } else {
+            animation.setAction(hero, ActionKind.JumpingRight)
+        }
+    } else if (hero.vx < 0) {
+        animation.setAction(hero, ActionKind.RunningLeft)
+    } else if (hero.vx > 0) {
+        animation.setAction(hero, ActionKind.RunningRight)
+    } else {
+        if (heroFacingLeft) {
+            animation.setAction(hero, ActionKind.IdleLeft)
+        } else {
+            animation.setAction(hero, ActionKind.IdleRight)
+        }
+    }
+})
+game.onUpdateInterval(700, function () {
+    if (isL1Open == 1) {
+        tiles.setWallAt(tiles.getTileLocation(34, 7), false)
+        tiles.setWallAt(tiles.getTileLocation(35, 7), false)
     }
 })
