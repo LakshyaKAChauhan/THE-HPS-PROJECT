@@ -258,19 +258,35 @@ function animateIdle () {
         . . . . f f f . . f f f . . . . 
         `)
 }
+function DestroyComp () {
+    showInstruction("###~~~~```***Gjawojaw")
+    showInstruction("You: Looks Like I am Now Connected!")
+    showInstruction("Commander: Good Job!, Now Go To Your Left Then Climb Up The Stairs")
+    showInstruction("Commander: You Will Find This Place Familiar! You Were Here Before When U Were Finding The Lever")
+    showInstruction("Commander: Go To The Green Box Like Tunnel That's The Way Out")
+    showInstruction("Commander: Go Away Quickly! This Place Will Now Explode Any Time!!!")
+    tiles.setWallAt(tiles.getTileLocation(29, 18), false)
+    tiles.setWallAt(tiles.getTileLocation(33, 18), false)
+    tiles.setTileAt(tiles.getTileLocation(29, 18), assets.tile`transparency16`)
+    tiles.setTileAt(tiles.getTileLocation(30, 18), assets.tile`transparency16`)
+    tiles.setTileAt(tiles.getTileLocation(31, 18), assets.tile`transparency16`)
+    tiles.setTileAt(tiles.getTileLocation(32, 18), assets.tile`transparency16`)
+    tiles.setTileAt(tiles.getTileLocation(33, 18), assets.tile`transparency16`)
+    hero.x += 3
+}
 function setLevelTileMap (level: number) {
     clearGame()
-    if (level == 9) {
+    if (level == 0) {
         game.splash("Episode 1:")
         game.splash("Finding The Lever! For Open New Path")
         tiles.setTilemap(tilemap`level`)
-    } else if (level == 7) {
+    } else if (level == 1) {
         game.splash("Episode 2:")
         game.splash("Going To The Maze!")
         tiles.setTilemap(tilemap`level_2`)
-    } else if (level == 6) {
+    } else if (level == 2) {
         tiles.setTilemap(tilemap`level_5`)
-    } else if (level == 0) {
+    } else if (level == 3) {
         tiles.setTilemap(tilemap`theMaze1`)
         game.splash("Episode 3:")
         game.splash("Escape The Maze")
@@ -279,11 +295,12 @@ function setLevelTileMap (level: number) {
         pixelsToMeters = 30
         gravity = 1 * pixelsToMeters
         hero.ay = gravity
-    } else if (level == 1) {
-        tiles.setTilemap(tilemap`level1`)
+    } else if (level == 4) {
+        tiles.setTilemap(tilemap`level5`)
         pixelsToMeters = 30
         gravity = 9.28 * pixelsToMeters
         hero.ay = gravity
+        tiles.setTileAt(tiles.getTileLocation(3, 2), assets.tile`transparency16`)
     }
     initializeLevel(level)
 }
@@ -634,9 +651,18 @@ function animateJumps () {
             `)
     }
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile3`, function (sprite, location) {
+    game.splash("You Won The Game!")
+    game.splash("Credits: Made By Lakshya Chauhan, Textures Are Made And Game Codded By Lakshya Chauhan.")
+    game.splash("The HPS Project")
+    game.over(true, effects.melt)
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`leverTileV`, function (sprite, location) {
     leverPlace.setImage(assets.image`LeverVDown`)
     isL1Open = 1
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`MainCompBottomUpLeft`, function (sprite, location) {
+    DestroyComp()
 })
 function animateCrouch () {
     mainCrouchLeft = animation.createAnimation(ActionKind.CrouchLeft, 100)
@@ -1020,6 +1046,40 @@ initializeAnimations()
 createPlayer(hero)
 setLevelTileMap(currentLevel)
 giveIntroduction()
+// set up hero animations
+game.onUpdate(function () {
+    if (hero.vx < 0) {
+        heroFacingLeft = true
+    } else if (hero.vx > 0) {
+        heroFacingLeft = false
+    }
+    if (hero.isHittingTile(CollisionDirection.Top)) {
+        hero.vy = 0
+    }
+    if (controller.down.isPressed()) {
+        if (heroFacingLeft) {
+            animation.setAction(hero, ActionKind.CrouchLeft)
+        } else {
+            animation.setAction(hero, ActionKind.CrouchRight)
+        }
+    } else if (hero.vy < 20 && !(hero.isHittingTile(CollisionDirection.Bottom))) {
+        if (heroFacingLeft) {
+            animation.setAction(hero, ActionKind.JumpingLeft)
+        } else {
+            animation.setAction(hero, ActionKind.JumpingRight)
+        }
+    } else if (hero.vx < 0) {
+        animation.setAction(hero, ActionKind.RunningLeft)
+    } else if (hero.vx > 0) {
+        animation.setAction(hero, ActionKind.RunningRight)
+    } else {
+        if (heroFacingLeft) {
+            animation.setAction(hero, ActionKind.IdleLeft)
+        } else {
+            animation.setAction(hero, ActionKind.IdleRight)
+        }
+    }
+})
 // Flier movement
 game.onUpdate(function () {
     for (let value8 of sprites.allOfKind(SpriteKind.Flier)) {
@@ -1055,40 +1115,6 @@ game.onUpdate(function () {
             value9.vx = Math.randomRange(30, 60)
         } else if (value9.isHittingTile(CollisionDirection.Right)) {
             value9.vx = Math.randomRange(-60, -30)
-        }
-    }
-})
-// set up hero animations
-game.onUpdate(function () {
-    if (hero.vx < 0) {
-        heroFacingLeft = true
-    } else if (hero.vx > 0) {
-        heroFacingLeft = false
-    }
-    if (hero.isHittingTile(CollisionDirection.Top)) {
-        hero.vy = 0
-    }
-    if (controller.down.isPressed()) {
-        if (heroFacingLeft) {
-            animation.setAction(hero, ActionKind.CrouchLeft)
-        } else {
-            animation.setAction(hero, ActionKind.CrouchRight)
-        }
-    } else if (hero.vy < 20 && !(hero.isHittingTile(CollisionDirection.Bottom))) {
-        if (heroFacingLeft) {
-            animation.setAction(hero, ActionKind.JumpingLeft)
-        } else {
-            animation.setAction(hero, ActionKind.JumpingRight)
-        }
-    } else if (hero.vx < 0) {
-        animation.setAction(hero, ActionKind.RunningLeft)
-    } else if (hero.vx > 0) {
-        animation.setAction(hero, ActionKind.RunningRight)
-    } else {
-        if (heroFacingLeft) {
-            animation.setAction(hero, ActionKind.IdleLeft)
-        } else {
-            animation.setAction(hero, ActionKind.IdleRight)
         }
     }
 })
