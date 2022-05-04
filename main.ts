@@ -10,7 +10,8 @@ enum ActionKind {
     CrouchRight,
     Flying,
     Walking,
-    Jumping
+    Jumping,
+    WalkingE
 }
 namespace SpriteKind {
     export const Bumper = SpriteKind.create()
@@ -49,9 +50,12 @@ function initializeAnimations () {
     initializeFlierAnimations()
 }
 function giveIntroduction () {
-    showInstruction("Move with the left and right buttons.")
-    showInstruction("Jump with the up or A button.")
-    showInstruction("Double jump by pressing jump again.")
+    showInstruction("There Are People Who Wants To Destroy The Cultural Heritage Of India!")
+    showInstruction("You Are Assigned By Military To Protect Them")
+    showInstruction("Commander: Escape The Invisible Maze Then Climb Up The Tower")
+    showInstruction("Commander: Then Go To The Red Mark Then You Will Go To The Next Room")
+    showInstruction("Commander: Find The Lever And Come Back To The Room On Which You Were Before")
+    showInstruction("Commander: At A Place You Will Find Abnormal Dirt Stand On It Then You Will Find The Way Out")
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     attemptJump()
@@ -256,22 +260,30 @@ function animateIdle () {
 }
 function setLevelTileMap (level: number) {
     clearGame()
-    if (level == 0) {
+    if (level == 9) {
+        game.splash("Episode 1:")
+        game.splash("Finding The Lever! For Open New Path")
         tiles.setTilemap(tilemap`level`)
-    } else if (level == 1) {
-        tiles.setTilemap(tilemap`level_0`)
-    } else if (level == 2) {
-        tiles.setTilemap(tilemap`level_1`)
-    } else if (level == 3) {
+    } else if (level == 7) {
+        game.splash("Episode 2:")
+        game.splash("Going To The Maze!")
         tiles.setTilemap(tilemap`level_2`)
-    } else if (level == 4) {
-        tiles.setTilemap(tilemap`level_3`)
-    } else if (level == 5) {
-        tiles.setTilemap(tilemap`level_4`)
     } else if (level == 6) {
         tiles.setTilemap(tilemap`level_5`)
-    } else if (level == 7) {
-        tiles.setTilemap(tilemap`level_6`)
+    } else if (level == 0) {
+        tiles.setTilemap(tilemap`theMaze1`)
+        game.splash("Episode 3:")
+        game.splash("Escape The Maze")
+        showInstruction("Commander: I Am Going To Tell You The Way Ou###ttt###****``~~")
+        showInstruction("You: Ahh! Looks Like The Connection Is Lost! I Have To Do It My Self!")
+        pixelsToMeters = 30
+        gravity = 1 * pixelsToMeters
+        hero.ay = gravity
+    } else if (level == 1) {
+        tiles.setTilemap(tilemap`level1`)
+        pixelsToMeters = 30
+        gravity = 9.28 * pixelsToMeters
+        hero.ay = gravity
     }
     initializeLevel(level)
 }
@@ -375,25 +387,8 @@ function animateRun () {
         . . . f a a a a b f . . . . . . 
         . . . . f f f f f . . . . . . . 
         `)
-    mainRunLeft.addAnimationFrame(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . f f f f f f f . . . . . . 
-        . . f e e e e e e e f . . . . . 
-        . f e e e e e e e e e f . . . . 
-        . f d d d d e d d e e f . . . . 
-        . f d d f d d e d e e f . . . . 
-        . f d d f d d d e e e f . . . . 
-        . f d d f d d d d d d f . . . . 
-        . f d d d d d d d d d f . . . . 
-        . . f c c c c a a c b f . . . . 
-        . . f c c c c d d c b f . . . . 
-        . . f b f f d d d f f f f . . . 
-        . . f a a a a a a a a b f f . . 
-        . . . f a a b f f a a a f f . . 
-        . . . . f f f . f f f f f . . . 
-        `)
-    mainRunLeft.addAnimationFrame(assets.image`EnemyLeftIdle`)
+    mainRunLeft.addAnimationFrame(assets.image`l`)
+    mainRunLeft.addAnimationFrame(assets.image`myImage`)
     mainRunLeft.addAnimationFrame(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -410,7 +405,7 @@ function animateRun () {
         f f f d d f f f f f f f . . . . 
         f f f a a a a a a a b f . . . . 
         . f a a b f a a b f f . . . . . 
-        . f f f f . f f f . . . . . . . 
+        . . f f f . f f f . . . . . . . 
         `)
     mainRunRight = animation.createAnimation(ActionKind.RunningRight, 100)
     animation.attachAnimation(hero, mainRunRight)
@@ -486,6 +481,37 @@ function animateRun () {
         . . . . . f f b a a f b a a f . 
         . . . . . . . f f f . f f f . . 
         `)
+}
+function animateRunE () {
+    E = animation.createAnimation(ActionKind.WalkingE, 100)
+    animation.attachAnimation(coin, E)
+    E.addAnimationFrame(assets.image`EnemyLeftIdle`)
+    E.addAnimationFrame(assets.image`EnemyLeftRWalk`)
+    E.addAnimationFrame(assets.image`EnemyLeftIdle`)
+    E.addAnimationFrame(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . f f f f f f f . . . . . . 
+        . . f e e e e e e e f . . . . . 
+        . f e e e e e e e e e f . . . . 
+        . f d d d d e d d e e f . . . . 
+        . f d d f d d e d e e f . . . . 
+        . f d d f d d d e e e f . . . . 
+        . f d d f d d d d d d f . . . . 
+        . f d d d d d d d d d f . . . . 
+        . . f c a a c c c c b f . . . . 
+        . f d d d b c c c c b f . . . . 
+        f f f d d f f f f f f f . . . . 
+        f f f a a a a a a a b f . . . . 
+        . f a a b f a a b f f . . . . . 
+        . . f f f . f f f . . . . . . . 
+        `)
+    ER = animation.createAnimation(ActionKind.WalkingE, 100)
+    animation.attachAnimation(coin, ER)
+    ER.addAnimationFrame(assets.image`EnemyRightIdle`)
+    ER.addAnimationFrame(assets.image`EnemyRightLWalk`)
+    ER.addAnimationFrame(assets.image`EnemyRightIdle`)
+    ER.addAnimationFrame(assets.image`EnemyRightRWalk`)
 }
 function animateJumps () {
     // Because there isn't currently an easy way to say "play this animation a single time
@@ -670,7 +696,7 @@ function clearGame () {
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tile1`, function (sprite, location) {
     info.changeLifeBy(1)
-    currentLevel += 2
+    currentLevel += 1
     if (hasNextLevel()) {
         setLevelTileMap(currentLevel)
     } else {
@@ -812,7 +838,6 @@ function spawnGoals () {
     }
 }
 let heroFacingLeft = false
-let coin: Sprite = null
 let leverLoc: tiles.Location = null
 let playerStartLocation: tiles.Location = null
 let flier: Sprite = null
@@ -822,6 +847,9 @@ let mainCrouchLeft: animation.Animation = null
 let isL1Open = 0
 let mainJumpRight: animation.Animation = null
 let mainJumpLeft: animation.Animation = null
+let ER: animation.Animation = null
+let coin: Sprite = null
+let E: animation.Animation = null
 let mainRunRight: animation.Animation = null
 let mainRunLeft: animation.Animation = null
 let flierIdle: animation.Animation = null
@@ -863,7 +891,7 @@ leverPlace = sprites.create(assets.image`LeverVUp`, SpriteKind.toggleAbleEntity)
 // single enemy
 invincibilityPeriod = 600
 pixelsToMeters = 30
-gravity = 9.81 * pixelsToMeters
+gravity = 9.28 * pixelsToMeters
 levelCount = 8
 currentLevel = 0
 scene.setBackgroundImage(img`
